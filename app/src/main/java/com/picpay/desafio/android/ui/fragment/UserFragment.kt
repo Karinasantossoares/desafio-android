@@ -36,21 +36,21 @@ class UserFragment : Fragment() {
             viewModel.start()
         }
 
-        viewModel.loadLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.loadResult.observe(viewLifecycleOwner, Observer {
             binding.swipeRefresh.isRefreshing = it
         })
 
-        viewModel.successListUserLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.resultSuccess.observe(viewLifecycleOwner, Observer {
             val adapter = UserListAdapter()
             adapter.users = it
             binding.recyclerView.adapter = adapter
         })
 
-        viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.errorResult.observe(viewLifecycleOwner, Observer {
             binding.btnRetry.isVisible = it
         })
 
-        viewModel.cachedLoadListUserLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.resultCach.observe(viewLifecycleOwner, Observer {
             if(it){
                 binding.labelLastRefreshTime.animate().setDuration(400L).alpha(1F)
             }else{

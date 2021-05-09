@@ -28,10 +28,10 @@ class UserViewModelTest : BaseViewModelTest() {
     @Before
     fun init() {
         viewModel = UserViewModel(useCase, true)
-        viewModel.errorLiveData.observeForever(errorLiveData)
-        viewModel.successListUserLiveData.observeForever(successListLiveData)
-        viewModel.cachedLoadListUserLiveData.observeForever(cachedLoadListUserLiveData)
-        viewModel.loadLiveData.observeForever(loadLiveData)
+        viewModel.errorResult.observeForever(errorLiveData)
+        viewModel.resultSuccess.observeForever(successListLiveData)
+        viewModel.resultCach.observeForever(cachedLoadListUserLiveData)
+        viewModel.loadResult.observeForever(loadLiveData)
     }
 
     @Test

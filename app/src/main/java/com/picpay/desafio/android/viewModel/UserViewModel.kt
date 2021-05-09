@@ -1,6 +1,7 @@
 package com.picpay.desafio.android.viewModel
 
 import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.picpay.desafio.android.model.data.User
@@ -13,10 +14,19 @@ class UserViewModel(
     isTest: Boolean = false
 ) : ViewModel() {
     var disposable = CompositeDisposable()
-    var successListUserLiveData = MutableLiveData<List<User>>()
-    var cachedLoadListUserLiveData = MutableLiveData<Boolean>()
-    var errorLiveData = MutableLiveData<Boolean>()
-    var loadLiveData = MutableLiveData<Boolean>()
+    private val _successListUserLiveData = MutableLiveData<List<User>>()
+    val resultSuccess: LiveData<List<User>>
+        get() = _successListUserLiveData
+    private var _cachedLoadListUserLiveData = MutableLiveData<Boolean>()
+    val resultCach: LiveData<Boolean>
+        get() = _cachedLoadListUserLiveData
+    private val _errorLiveData = MutableLiveData<Boolean>()
+    val errorResult: LiveData<Boolean>
+        get() = _errorLiveData
+    private val _loadLiveData = MutableLiveData<Boolean>()
+    val loadResult: LiveData<Boolean>
+        get() = _loadLiveData
+
 
     init {
         if (!isTest) {
@@ -32,15 +42,15 @@ class UserViewModel(
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun getNetworkUsers() {
-        loadLiveData.postValue(true)
+        _loadLiveData.value = true
         disposable.add(useCase.getUsers().subscribe { res, error ->
             if (res != null) {
-                errorLiveData.value = false
-                cachedLoadListUserLiveData.value = false
-                successListUserLiveData.value = res
+                _errorLiveData.value = false
+                _cachedLoadListUserLiveData.value = false
+                _successListUserLiveData.value = res
                 saveUserLocal(res)
             }
-            loadLiveData.value = false
+            _loadLiveData.value = false
         })
     }
 
@@ -50,14 +60,14 @@ class UserViewModel(
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun getUsersLocal() {
-        loadLiveData.value = true
+        _loadLiveData.value = true
         disposable.add(useCase.getLocalUsers().subscribe { res, _ ->
             if (!res.isNullOrEmpty()) {
-                errorLiveData.value = false
-                successListUserLiveData.value = res
-                cachedLoadListUserLiveData.value = true
+                _errorLiveData.value = false
+                _successListUserLiveData.value = res
+                _cachedLoadListUserLiveData.value = true
             } else {
-                errorLiveData.value = true
+                _errorLiveData.value = true
             }
         })
     }
