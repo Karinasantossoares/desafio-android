@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PicPay</string>
+    <string name="title">Contatos</string>
+    <string name="error">Ocorreu um erro. Tente novamente.</string>
+    <string name="message_error_solicitation">Não foi possível realizar sua solicitação , tente novamente em alguns segundos.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="message_cached_load">Lista carregada do cache..</string>
+    <string name="text_button_retry">Não foi possível conectar com o servidor, por favor tente novamente.</string>
+
+</resources>
