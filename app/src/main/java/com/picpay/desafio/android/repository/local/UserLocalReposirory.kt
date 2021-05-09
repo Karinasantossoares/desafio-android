@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers
 
 interface UserLocalReposirory {
     fun saveUser(user: List<User>): Completable
-    fun loadUser(): Single<List<User>>
+    fun getLocalUsers(): Single<List<User>>
 
     class UserRepositoryImpl(private val userDao: UserDao) : UserLocalReposirory {
 
@@ -19,7 +19,7 @@ interface UserLocalReposirory {
             UserEntity(it.img, it.name, it.id, it.username)
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
-        override fun loadUser() =
+        override fun getLocalUsers() =
             userDao.loadUser().map {
                 it.map { userEntity ->
                     User(

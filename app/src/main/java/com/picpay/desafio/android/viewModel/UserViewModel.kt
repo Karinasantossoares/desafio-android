@@ -1,15 +1,11 @@
 package com.picpay.desafio.android.viewModel
 
-import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.picpay.desafio.android.R
 import com.picpay.desafio.android.model.data.User
 import com.picpay.desafio.android.useCase.UserUseCase
 import io.reactivex.disposables.CompositeDisposable
-import java.time.LocalDate
-import java.util.*
 
 
 class UserViewModel(
@@ -55,7 +51,7 @@ class UserViewModel(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun getUsersLocal() {
         loadLiveData.value = true
-        disposable.add(useCase.loadUserLocal().subscribe { res, _ ->
+        disposable.add(useCase.getLocalUsers().subscribe { res, _ ->
             if (!res.isNullOrEmpty()) {
                 errorLiveData.value = false
                 successListUserLiveData.value = res

@@ -1,6 +1,5 @@
 package com.picpay.desafio.android.useCase
 
-import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
 import com.picpay.desafio.android.RxImmediateSchedulerRule
 import com.picpay.desafio.android.model.data.User
@@ -56,9 +55,9 @@ class UserUseCaseTest {
     @Test
     fun `when getUsers local with success then return listUser`() {
         val expected = listOf(User("img", "name", 1, "userName"))
-        whenever(localRepository.loadUser()).thenReturn(Single.just(expected))
+        whenever(localRepository.getLocalUsers()).thenReturn(Single.just(expected))
 
-        useCase.loadUserLocal()
+        useCase.getLocalUsers()
             .test()
             .assertResult(expected)
     }
@@ -66,9 +65,9 @@ class UserUseCaseTest {
     @Test
     fun `when getUsers local with error then return error`() {
         val expectedError = Exception("Erro useCase")
-        whenever(localRepository.loadUser()).thenReturn(Single.error(expectedError))
+        whenever(localRepository.getLocalUsers()).thenReturn(Single.error(expectedError))
 
-        useCase.loadUserLocal()
+        useCase.getLocalUsers()
             .test()
             .assertError(expectedError)
     }

@@ -38,7 +38,7 @@ class UserViewModelTest : BaseViewModelTest() {
     fun `getUser with success in cache`() {
         val expectedListLocal =
             listOf(User("imgLocal", "nameLocal", 2, "userNameLocal"))
-        whenever(useCase.loadUserLocal()).thenReturn(Single.just(expectedListLocal))
+        whenever(useCase.getLocalUsers()).thenReturn(Single.just(expectedListLocal))
 
         viewModel.getUsersLocal()
 
@@ -50,28 +50,35 @@ class UserViewModelTest : BaseViewModelTest() {
 
     @Test
     fun `getUser with error in cache`() {
-        val expectedList = listOf(User("img", "name", 1, "userName"))
-        val expectedListLocal =
-            listOf(User("imgLocal", "nameLocal", 2, "userNameLocal"))
-        whenever(useCase.getUsers()).thenReturn(Single.just(expectedList))
-        whenever(useCase.loadUserLocal()).thenReturn(Single.just(expectedListLocal))
-        whenever(useCase.saveUserLocal(any())).thenReturn(Completable.complete())
-        viewModel = UserViewModel(useCase)
-
+        val exception = Exception("error")
+        whenever(useCase.getLocalUsers()).thenReturn(Single.error(exception))
         viewModel.getUsersLocal()
-        verify(loadLiveData, times(2)).onChanged(true)
-        verify(errorLiveData, times(3)).onChanged(false)
-        verify(successListLiveData, times(2)).onChanged(expectedListLocal)
-        verify(cachedLoadListUserLiveData, times(2)).onChanged(true)
+        verify(loadLiveData).onChanged(true)
+        verify(errorLiveData).onChanged(true)
     }
 
     @Test
     fun `getUser with success in network`() {
+        val expectedListLocal =
+            listOf(User("imgLocal", "nameLocal", 2, "userNameLocal"))
+        whenever(useCase.getUsers()).thenReturn(Single.just(expectedListLocal))
+        whenever(useCase.saveUserLocal(any())).thenReturn(Completable.complete())
 
+        viewModel.getNetworkUsers()
+
+        verify(loadLiveData).onChanged(true)
+        verify(loadLiveData).onChanged(false)
+        verify(errorLiveData).onChanged(false)
+        verify(cachedLoadListUserLiveData).onChanged(false)
+        verify(successListLiveData).onChanged(expectedListLocal)
     }
 
     @Test
     fun `getUser with error in network`() {
-
+        val exception = Exception("error")
+        whenever(useCase.getUsers()).thenReturn(Single.error(exception))
+        viewModel.getNetworkUsers()
+        verify(loadLiveData).onChanged(true)
+        verify(loadLiveData).onChanged(false)
     }
 }

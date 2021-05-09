@@ -8,7 +8,7 @@ import io.reactivex.Single
 
 interface UserUseCase {
     fun getUsers(): Single<List<User>>
-    fun loadUserLocal() :Single<List<User>>
+    fun getLocalUsers() :Single<List<User>>
     fun saveUserLocal(user:List<User>):Completable
 
     class UserUseCaseImpl(
@@ -17,7 +17,7 @@ interface UserUseCase {
     ) : UserUseCase {
 
         override fun getUsers() = networkRepository.getUsers()
-        override fun loadUserLocal() = userLocalReposirory.loadUser()
+        override fun getLocalUsers() = userLocalReposirory.getLocalUsers()
         override fun saveUserLocal(user:List<User>)= userLocalReposirory.saveUser(user)
 
     }
