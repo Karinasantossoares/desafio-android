@@ -69,7 +69,9 @@ class UserViewModel(
             } else {
                 _errorLiveData.value = true
             }
+            _loadLiveData.value = false
         })
+
     }
 
     override fun onCleared() {

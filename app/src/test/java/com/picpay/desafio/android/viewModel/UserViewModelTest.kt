@@ -46,6 +46,7 @@ class UserViewModelTest : BaseViewModelTest() {
         verify(errorLiveData).onChanged(false)
         verify(successListLiveData).onChanged(expectedListLocal)
         verify(cachedLoadListUserLiveData).onChanged(true)
+
     }
 
     @Test
@@ -55,6 +56,7 @@ class UserViewModelTest : BaseViewModelTest() {
         viewModel.getUsersLocal()
         verify(loadLiveData).onChanged(true)
         verify(errorLiveData).onChanged(true)
+        verify(loadLiveData).onChanged(false)
     }
 
     @Test

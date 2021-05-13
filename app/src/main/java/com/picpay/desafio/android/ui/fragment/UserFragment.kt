@@ -57,8 +57,6 @@ class UserFragment : Fragment() {
                 binding.labelLastRefreshTime.animate().setDuration(400L).alpha(0F)
             }
         })
-
-
     }
 
 }
